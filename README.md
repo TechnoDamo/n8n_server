@@ -1,2 +1,50 @@
-# n8n_server
-# n8n_server
+# 🚀 n8n Server Setup
+
+![n8n](https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png)  
+
+A simple and automated setup for **n8n** with **Caddy** as reverse proxy, designed to run on Ubuntu servers. Supports running under the current user or a newly created user.  
+
+---
+
+## ✨ Features
+
+- Automated installation of:
+  - Docker & Docker Compose
+  - n8n workflow automation
+  - Caddy reverse proxy with automatic HTTPS
+- Optional creation of a dedicated server user
+- Idempotent scripts (safe to re-run)
+- Centralized configuration via `config.env`
+- Docker volumes for persistent data
+
+---
+
+## 📝 Prerequisites
+
+- Ubuntu 20.04+ server
+- SSH access
+- Git installed
+- Optional: sudo privileges
+
+---
+
+## ⚡ Quick Start
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/TechnoDamo/n8n_server.git
+cd n8n_server
+```
+
+### 2. Configure credentials
+```bash
+nano config.env
+```
+
+### 3. Start server
+```bash
+cd scripts
+chmod +x *
+sudo ./install_all.sh
+```
