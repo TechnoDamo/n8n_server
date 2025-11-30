@@ -61,7 +61,7 @@ echo "Podman installation complete!"
 # --------------------------
 # Create new user (optional)
 # --------------------------
-export NEW_USER="${NEW_USER:-container-user}"  # Default value if not set
+export NEW_USER="${NEW_USER:-n8n_admin}"  # Default value if not set
 
 echo "Creating user: $NEW_USER"
 
