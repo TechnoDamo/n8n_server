@@ -41,7 +41,7 @@ n8n_server/
 ```
 
 ## ⚡ Quick Start
-Write your values to the config.env and change damirkoblev.ru to your domain in caddy/Caddyfile.
+Write your values to the .env and change damirkoblev.ru to your domain in caddy/Caddyfile.
 ```bash
 # Bonus - if you need to stop or remove all existing containers on the system
 sudo docker stop $(sudo docker ps -aq) 2>/dev/null
