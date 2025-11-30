@@ -9,7 +9,7 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 ## ✨ Features
 
 - Automated installation of:
-  - Podman & Podman Compose
+  - Docker & Docker Compose
   - n8n workflow automation
   - Caddy reverse proxy with automatic HTTPS
 - Optional creation of a dedicated server user
