@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Load config
-source ../config.env
+source ~/n8n_server/config.env
 
 # Check if user exists
 if id "$NEW_USER" &>/dev/null; then

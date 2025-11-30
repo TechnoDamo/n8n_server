@@ -1,22 +1,28 @@
 #!/bin/bash
-source ../config.env
+# Load config
+source ~/n8n_server/config.env
 
-# Create Docker network
-docker network create web || true
+# Create Docker network if it doesn't exist
+if ! docker network ls | grep -q '^web'; then
+    docker network create web
+fi
 
-# Copy docker-compose files to home
-mkdir -p /home/$NEW_USER/n8n
-cp ../n8n/docker-compose.n8n.yml /home/$NEW_USER/n8n/docker-compose.yml
-cp ../caddy/Caddyfile /home/$NEW_USER/caddy/Caddyfile
-mkdir -p /home/$NEW_USER/caddy
-cp ../caddy/docker-compose.caddy.yml /home/$NEW_USER/caddy/docker-compose.yml
+# Ensure directories exist (inside the repo)
+mkdir -p ~/n8n_server/n8n ~/n8n_server/caddy
 
-# Replace placeholders in n8n Compose file
-sed -i "s|yourdomain.com|$DOMAIN|g" /home/$NEW_USER/n8n/docker-compose.yml
-sed -i "s|admin|$N8N_USER|g" /home/$NEW_USER/n8n/docker-compose.yml
-sed -i "s|strongpassword|$N8N_PASSWORD|g" /home/$NEW_USER/n8n/docker-compose.yml
+# Copy docker-compose files (no placeholders needed)
+cp ~/n8n_server/n8n/docker-compose.yml ~/n8n_server/n8n/docker-compose.yml
+cp ~/n8n_server/caddy/docker-compose.yml ~/n8n_server/caddy/docker-compose.yml
+cp ~/n8n_server/caddy/Caddyfile ~/n8n_server/caddy/Caddyfile
 
-# Run n8n and Caddy
-cd /home/$NEW_USER/n8n && docker compose up -d
-cd /home/$NEW_USER/caddy && docker compose up -d
+# Make the new user the owner
+sudo chown -R "$NEW_USER:$NEW_USER" ~/n8n_server
 
+# Run n8n and Caddy as the new user with env-file
+sudo -u "$NEW_USER" bash -c "
+cd ~/n8n_server/n8n
+docker compose --env-file ~/n8n_server/config.env up -d
+
+cd ~/n8n_server/caddy
+docker compose --env-file ~/n8n_server/config.env up -d
+"
