@@ -13,7 +13,7 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
   - n8n workflow automation
   - Caddy reverse proxy with automatic HTTPS
 - Optional creation of a dedicated server user
-- Centralized configuration via `config.env`
+- Centralized configuration via `.env`
 - Container-host data mapping for convenient backups
 
 ---
