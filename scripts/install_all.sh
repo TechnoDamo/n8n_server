@@ -1,14 +1,16 @@
 #!/bin/bash
 
-# Run scripts in sequence
+# Load config
+source ../config.env
+
+# 1️⃣ Create user (idempotent)
 bash ./01_create_user.sh
-echo "User created"
+echo "User setup complete."
 
-# Switch to the new user for the rest
-sudo -i -u $NEW_USER bash << EOF
-cd ~/scripts
-bash 02_install_docker.sh
-bash 03_install_docker_compose.sh
-bash 04_setup_n8n_caddy.sh
-EOF
-
+# 2️⃣ Run remaining scripts as the new user
+sudo -u "$NEW_USER" bash -c "
+cd ~/n8n_server/scripts
+./02_install_docker.sh
+./03_install_docker_compose.sh
+./04_setup_n8n_caddy.sh
+"
