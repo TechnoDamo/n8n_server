@@ -32,34 +32,32 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 Write your values to the config.env and change damirkoblev.ru to your domain in caddy/Caddyfile.
 ```bash
 # Bonus - if you need to stop or remove all existing containers on the system
-sudo podman stop $(sudo podman ps -aq) 2>/dev/null
-sudo podman rm $(sudo podman ps -aq) 2>/dev/null
+sudo docker stop $(sudo docker ps -aq) 2>/dev/null
+sudo docker rm $(sudo docker ps -aq) 2>/dev/null
 ```
 
 ### Installation
 
 ```bash
 # ----------------------------------------------------
-# Install podman and podman-compose if not installed 
+# Install docker and docker-compose if not installed 
 # ----------------------------------------------------
 
 # Update system
 sudo apt update && sudo apt upgrade -y
 
-# Install Podman
-sudo apt install -y podman
+# Install Docker
+sudo apt install -y docker.io
 
-# Install podman-compose
-sudo apt install -y podman-compose
+# Enable Docker service
+sudo systemctl enable --now docker
 
-# Configure rootless mode
-echo "kernel.unprivileged_userns_clone=1" | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
+# Install Docker Compose plugin
+sudo apt install -y docker-compose-plugin
 
 # Verify installation
-podman --version
-podman-compose --version
-echo "Podman installation complete!"
+docker --version
+docker compose version
 ```
 ```bash
 # --------------------------
@@ -88,9 +86,6 @@ echo "Switching to user $NEW_USER..."
 sudo su - $NEW_USER
 ```
 ```bash
-# --------------------------
-# Step 3: Start installation
-# --------------------------
 # --------------------------
 # Step 3: Start installation
 # --------------------------
