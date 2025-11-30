@@ -76,7 +76,7 @@ sudo chmod 600 /home/$NEW_USER/.ssh/authorized_keys
 
 echo "User $NEW_USER created successfully!"
 
-# Add to sudo group (Optional)
+# Add to sudo group
 sudo usermod -aG sudo $NEW_USER
 
 # Switch to the new user
@@ -89,9 +89,10 @@ sudo su - $NEW_USER
 # --------------------------
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
+sudo kill -9 $(sudo lsof -t -i:5678)
 podman network create web
 podman pull docker.io/n8nio/n8n:latest
 podman pull docker.io/caddy:latest
-podman-compose --env-file config.env -f n8n/docker-compose.yml -f caddy/docker-compose.yml up -d
+sudo podman-compose --env-file config.env -f n8n/docker-compose.yml -f caddy/docker-compose.yml up -d
 ```
 
