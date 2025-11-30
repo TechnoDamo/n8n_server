@@ -9,7 +9,7 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 ## ✨ Features
 
 - Automated installation of:
-  - Docker & Docker Compose
+  - Podman & Podman Compose
   - n8n workflow automation
   - Caddy reverse proxy with automatic HTTPS
 - Optional creation of a dedicated server user
@@ -30,34 +30,65 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 ---
 
 ## ⚡ Quick Start
+Write your values to the config.env and change damirkoblev.ru to your domain in caddy/Caddyfile.
 
 ### 1. Installation
 
 ```bash
-# --------------------------
-# Step 0: Remove old n8n_server folder if it exists
-# --------------------------
-if [ -d "$HOME/n8n_server" ]; then
-    echo "Removing existing n8n_server folder..."
-    rm -rf "$HOME/n8n_server"
-fi
+# ----------------------------------------------------
+# Install podman and podman-compose if not installed 
+# ----------------------------------------------------
 
-# --------------------------
-# Step 1: Clone the Repository
-# --------------------------
-git clone https://github.com/TechnoDamo/n8n_server.git
-cd n8n_server
+# Update system
+sudo apt update && sudo apt upgrade -y
 
-# --------------------------
-# Step 2: Edit configuration
-# --------------------------
-nano config.env
+# Install Podman
+sudo apt install -y podman
 
+# Install podman-compose
+sudo apt install -y podman-compose
+
+# Configure rootless mode
+echo "kernel.unprivileged_userns_clone=1" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
+# Verify installation
+podman --version
+podman-compose --version
+echo "Podman installation complete!"
+```
+```bash
+# --------------------------
+# Create new user (optional)
+# --------------------------
+export NEW_USER="${NEW_USER:-container-user}"  # Default value if not set
+
+echo "Creating user: $NEW_USER"
+
+sudo useradd -m -s /bin/bash $NEW_USER
+sudo passwd $NEW_USER
+
+sudo mkdir -p /home/$NEW_USER/.ssh
+sudo echo "YOUR_PUBLIC_SSH_KEY" | sudo tee /home/$NEW_USER/.ssh/authorized_keys
+sudo chown -R $NEW_USER:$NEW_USER /home/$NEW_USER/.ssh
+sudo chmod 700 /home/$NEW_USER/.ssh
+sudo chmod 600 /home/$NEW_USER/.ssh/authorized_keys
+
+echo "User $NEW_USER created successfully!"
+
+# Add to sudo group (Optional)
+sudo usermod -aG sudo $NEW_USER
+
+# Switch to the new user
+echo "Switching to user $NEW_USER..."
+sudo su - $NEW_USER
+```
+```bash
 # --------------------------
 # Step 3: Start installation
 # --------------------------
-cd scripts
-chmod +x *
-sudo ./install_all.sh
+git clone https://github.com/TechnoDamo/n8n_server.git
+cd n8n_server
+podman-compose --env-file config.env -f n8n/docker-compose.yml -f caddy/docker-compose.yml up -d
 ```
 

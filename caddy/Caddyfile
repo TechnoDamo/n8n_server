@@ -1,4 +1,4 @@
-${DOMAIN} {
+damirkoblev.ru {
     reverse_proxy n8n:5678
     encode gzip
 }

@@ -3,19 +3,14 @@ services:
     image: n8nio/n8n:latest
     restart: unless-stopped
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=${N8N_USER}
-      - N8N_BASIC_AUTH_PASSWORD=${N8N_PASSWORD}
       - N8N_HOST=${DOMAIN}
-      - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - N8N_EDITOR_BASE_URL=${WEBHOOK_URL}
       - WEBHOOK_URL=${WEBHOOK_URL}
     ports:
-      - "5678:5678"  # optional, internal access
+      - "5678:5678"
     volumes:
-      - ${BACKUP_DIR}:/home/node/.n8n
-    user: "${MY_UID}:${MY_GID}"
+      - ${N8n_BACKUP_DIR}:/home/node/.n8n
     networks:
       - web
 
