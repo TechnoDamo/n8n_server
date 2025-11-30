@@ -89,6 +89,7 @@ sudo su - $NEW_USER
 # --------------------------
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
+podman network create web
 podman-compose --env-file config.env -f n8n/docker-compose.yml -f caddy/docker-compose.yml up -d
 ```
 
