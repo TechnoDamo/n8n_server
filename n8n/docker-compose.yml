@@ -14,7 +14,7 @@ services:
     ports:
       - "5678:5678"  # optional, internal access
     volumes:
-      - ${BACKUP_DATA}:/home/node/.n8n
+      - ${BACKUP_DIR}:/home/node/.n8n
     networks:
       - web
 
