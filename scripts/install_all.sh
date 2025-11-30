@@ -31,6 +31,12 @@ if [[ "$CREATE_NEW_USER" =~ ^[Yy]$ ]]; then
         echo "Target directory $TARGET_DIR exists. Removing old copy..."
         sudo rm -rf "$TARGET_DIR"
     fi
+    MY_UID=$(id -u $NEW_USER)
+    MY_GID=$(id -g $NEW_USER)
+
+    # Update config.env
+    sed -i "s/^MY_UID=.*/MY_UID=$MY_UID/" "$CONFIG_FILE"
+    sed -i "s/^MY_GID=.*/MY_GID=$MY_GID/" "$CONFIG_FILE"
 
     # Copy repo to new user's home
     echo "Copying repo to $TARGET_DIR..."
