@@ -28,6 +28,18 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 
 ---
 
+## 📁 Project Structure
+
+```
+n8n_server/
+├── caddy # Caddy configuration folder
+│   └── Caddyfile # Reverse proxy & SSL setup
+├── n8n_data # Persistent storage for n8n workflows and credentials
+├── docker-compose.yml # Docker Compose file to run n8n + Cadd
+├── .env # Environment variables for n8n and services
+└── README.md # Project documentation
+```
+
 ## ⚡ Quick Start
 Write your values to the config.env and change damirkoblev.ru to your domain in caddy/Caddyfile.
 ```bash
@@ -80,6 +92,8 @@ echo "User $NEW_USER created successfully!"
 
 # Add to sudo group
 sudo usermod -aG sudo $NEW_USER
+# Add to docker group
+sudo usermod -aG docker $NEW_USER
 
 # Switch to the new user
 echo "Switching to user $NEW_USER..."
@@ -92,34 +106,11 @@ sudo su - $NEW_USER
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
 
-# Load env vars
-source config.env
+sudo chown -R 1000:1000 ~/n8n_server/n8n_data
+sudo chmod -R 755 ~/n8n_server/n8n_data
 
-# Backup directory
-sudo mkdir -p "$N8N_BACKUP_DIR"
-sudo chown root:root "$N8N_BACKUP_DIR"
-sudo chmod 755 "$N8N_BACKUP_DIR"
-echo "Created backup directory: $N8N_BACKUP_DIR"
-
-# Caddy data directories
-sudo mkdir -p caddy_data caddy_config
-sudo chown root:root caddy_data caddy_config
-sudo chmod 755 caddy_data caddy_config
-
-# Free port 5678
-sudo kill -9 $(sudo lsof -t -i:5678) 2>/dev/null || echo "Port 5678 clear"
-
-# Podman network
-sudo podman network create web 2>/dev/null || echo "Network already exists"
-
-# Pull images
-sudo podman pull docker.io/n8nio/n8n:latest
-sudo podman pull docker.io/caddy:latest
-
-# Start the stack
-sudo podman-compose --env-file /home/n8n_admin/n8n_server/config.env \
-  -f n8n/docker-compose.yml \
-  -f caddy/docker-compose.yml up -d
+# Start services
+docker-compose up -d
 ```
 
 ## 🎉 Deployment Successful!
