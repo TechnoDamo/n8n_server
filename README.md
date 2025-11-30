@@ -34,13 +34,30 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 ### 1. Installation
 
 ```bash
-# 1. Clone the Repository
+# --------------------------
+# Step 0: Remove old n8n_server folder if it exists
+# --------------------------
+if [ -d "$HOME/n8n_server" ]; then
+    echo "Removing existing n8n_server folder..."
+    rm -rf "$HOME/n8n_server"
+fi
+
+# --------------------------
+# Step 1: Clone the Repository
+# --------------------------
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
-# 2. Edit configuration
+
+# --------------------------
+# Step 2: Edit configuration
+# --------------------------
 nano config.env
-# 3. Start installation
+
+# --------------------------
+# Step 3: Start installation
+# --------------------------
 cd scripts
 chmod +x *
 sudo ./install_all.sh
 ```
+
