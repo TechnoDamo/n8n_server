@@ -26,15 +26,23 @@ if [[ "$CREATE_NEW_USER" =~ ^[Yy]$ ]]; then
     USER_HOME="/home/$NEW_USER"
     TARGET_DIR="$USER_HOME/n8n_server"
 
+    # Remove old copy if exists
     if [ -d "$TARGET_DIR" ]; then
         echo "Target directory $TARGET_DIR exists. Removing old copy..."
         sudo rm -rf "$TARGET_DIR"
     fi
 
+    # Copy repo to new user's home
     echo "Copying repo to $TARGET_DIR..."
     sudo cp -r "$REPO_DIR" "$TARGET_DIR"
     sudo chown -R "$NEW_USER:$NEW_USER" "$TARGET_DIR"
 
+    # Ensure n8n data folder exists with correct permissions
+    N8N_DATA_DIR="$USER_HOME/.n8n"
+    mkdir -p "$N8N_DATA_DIR"
+    sudo chown -R "$NEW_USER:$NEW_USER" "$N8N_DATA_DIR"
+
+    # Run remaining scripts as new user
     echo "Running remaining scripts as $NEW_USER..."
     sudo -u "$NEW_USER" bash -c "
 cd $TARGET_DIR/scripts
@@ -45,6 +53,12 @@ cd $TARGET_DIR/scripts
 
 else
     echo "Running installation under the CURRENT user: $USER"
+    
+    # Ensure n8n data folder exists with correct permissions
+    N8N_DATA_DIR="$HOME/.n8n"
+    mkdir -p "$N8N_DATA_DIR"
+    sudo chown -R "$USER:$USER" "$N8N_DATA_DIR"
+
     cd "$REPO_DIR/scripts"
     ./02_install_docker.sh
     ./03_install_docker_compose.sh
