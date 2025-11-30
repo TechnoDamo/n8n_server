@@ -2,7 +2,7 @@
 
 ![n8n](https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png)  
 
-A simple and automated setup for **n8n** with **Caddy** as reverse proxy, designed to run on Ubuntu servers. Supports running under the current user or a newly created user.  
+A simple and automated setup for **n8n** with **Caddy** as reverse proxy, designed to run on Ubuntu servers.
 
 ---
 
@@ -13,9 +13,8 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
   - n8n workflow automation
   - Caddy reverse proxy with automatic HTTPS
 - Optional creation of a dedicated server user
-- Idempotent scripts (safe to re-run)
 - Centralized configuration via `config.env`
-- Docker volumes for persistent data
+- Container-host data mapping for convenient backups
 
 ---
 
@@ -24,7 +23,7 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 - Ubuntu 20.04+ server
 - SSH access
 - Git installed
-- Optional: sudo privileges
+- Sudo privileges
 - Valid domain pointing to the servers IP
 
 ---
@@ -32,7 +31,7 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 ## ⚡ Quick Start
 Write your values to the config.env and change damirkoblev.ru to your domain in caddy/Caddyfile.
 
-### 1. Installation
+### Installation
 
 ```bash
 # ----------------------------------------------------
@@ -89,10 +88,21 @@ sudo su - $NEW_USER
 # --------------------------
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
-sudo kill -9 $(sudo lsof -t -i:5678)
-podman network create web
-podman pull docker.io/n8nio/n8n:latest
-podman pull docker.io/caddy:latest
+sudo kill -9 $(sudo lsof -t -i:5678) 2>/dev/null || echo "Port 5678 clear"
+sudo podman network create web
+sudo podman pull docker.io/n8nio/n8n:latest
+sudo podman pull docker.io/caddy:latest
 sudo podman-compose --env-file config.env -f n8n/docker-compose.yml -f caddy/docker-compose.yml up -d
 ```
 
+## 🎉 Deployment Successful!
+
+Your n8n instance is now running at: **https://{$DOMAIN}**
+
+### What's Next?
+- 🌐 Access your n8n dashboard
+- 🔧 Start building automations
+- 📚 Explore [n8n documentation](https://docs.n8n.io)
+- 💬 Join the [n8n community](https://community.n8n.io)
+
+**Happy automating! 🚀**
