@@ -25,25 +25,21 @@ A simple and automated setup for **n8n** with **Caddy** as reverse proxy, design
 - SSH access
 - Git installed
 - Optional: sudo privileges
+- Valid domain pointing to the servers IP
 
 ---
 
 ## ⚡ Quick Start
 
-### 1. Clone the Repository
+### 1. Installation
 
 ```bash
+# 1. Clone the Repository
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
-```
-
-### 2. Configure credentials
-```bash
+# 2. Edit configuration
 nano config.env
-```
-
-### 3. Start server
-```bash
+# 3. Start installation
 cd scripts
 chmod +x *
 sudo ./install_all.sh
