@@ -1,12 +1,19 @@
 services:
   n8n:
     image: n8nio/n8n:latest
+    container_name: n8n
     restart: unless-stopped
     environment:
       - N8N_HOST=${DOMAIN}
       - N8N_PROTOCOL=https
       - N8N_EDITOR_BASE_URL=${WEBHOOK_URL}
       - WEBHOOK_URL=${WEBHOOK_URL}
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      - N8N_GIT_NODE_DISABLE_BARE_REPOS=true
+      - GENERIC_TIMEZONE=Europe/Moscow
+      - TZ=Europe/Moscow
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
     ports:
       - "5678:5678"
     volumes:
