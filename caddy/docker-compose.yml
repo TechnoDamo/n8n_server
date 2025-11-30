@@ -7,7 +7,11 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"      
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:Z
+      - ./caddy_data:/data:Z
+      - ./caddy_config:/config:Z
     networks:
       - web
 

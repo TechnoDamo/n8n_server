@@ -10,7 +10,7 @@ services:
     ports:
       - "5678:5678"
     volumes:
-      - ${N8n_BACKUP_DIR}:/home/node/.n8n
+      - ${N8N_BACKUP_DIR}:/home/node/.n8n:Z  # Added :Z
     networks:
       - web
 
