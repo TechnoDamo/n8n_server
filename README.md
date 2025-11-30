@@ -105,7 +105,7 @@ sudo su - $NEW_USER
 # --------------------------
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
-
+mkdir n8n_data
 sudo chown -R 1000:1000 ~/n8n_server/n8n_data
 sudo chmod -R 755 ~/n8n_server/n8n_data
 
