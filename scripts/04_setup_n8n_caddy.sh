@@ -37,6 +37,7 @@ CADDY_DIR="$SCRIPT_DIR/caddy"
 # Remove old containers if they exist (idempotent)
 # --------------------------
 echo "Stopping and removing existing containers if any..."
+sed -i "s|\${DOMAIN}|$DOMAIN|g" ~/n8n_server/caddy/Caddyfile
 docker compose -f "$N8N_DIR/docker-compose.yml" down --remove-orphans || true
 docker compose -f "$CADDY_DIR/docker-compose.yml" down --remove-orphans || true
 
