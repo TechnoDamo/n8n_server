@@ -91,28 +91,42 @@ sudo su - $NEW_USER
 # --------------------------
 # Step 3: Start installation
 # --------------------------
+# --------------------------
+# Step 3: Start installation
+# --------------------------
 git clone https://github.com/TechnoDamo/n8n_server.git
 cd n8n_server
 
-# Source the config to get BACKUP_DIR variable
+# Load env vars
 source config.env
 
-# Create the backup directory from config (fixed variable name)
-mkdir -p "$N8N_BACKUP_DIR"
-chown $USER:$USER "$N8N_BACKUP_DIR"
-chmod 755 "$N8N_BACKUP_DIR"
+# Backup directory
+sudo mkdir -p "$N8N_BACKUP_DIR"
+sudo chown root:root "$N8N_BACKUP_DIR"
+sudo chmod 755 "$N8N_BACKUP_DIR"
 echo "Created backup directory: $N8N_BACKUP_DIR"
 
-# Create Caddy directories
-mkdir -p caddy_data caddy_config
-chown $USER:$USER caddy_data caddy_config
-chmod 755 caddy_data caddy_config
+# Caddy data directories
+sudo mkdir -p caddy_data caddy_config
+sudo chown root:root caddy_data caddy_config
+sudo chmod 755 caddy_data caddy_config
 
+# Free port 5678
 sudo kill -9 $(sudo lsof -t -i:5678) 2>/dev/null || echo "Port 5678 clear"
+
+# Podman network
 sudo podman network create web 2>/dev/null || echo "Network already exists"
+
+# Pull images
 sudo podman pull docker.io/n8nio/n8n:latest
 sudo podman pull docker.io/caddy:latest
-sudo podman-compose --env-file config.env -f n8n/docker-compose.yml -f caddy/docker-compose.yml up -d
+
+# Start the stack
+sudo podman-compose --env-file config.env \
+  -f n8n/docker-compose.yml \
+  -f caddy/docker-compose.yml \
+  up -d
+
 ```
 
 ## 🎉 Deployment Successful!

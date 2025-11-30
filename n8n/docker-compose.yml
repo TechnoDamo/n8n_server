@@ -15,13 +15,7 @@ services:
       - TZ=Europe/Moscow
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - DB_SQLITE_POOL_SIZE=5
-    ports:
-      - "5678:5678"
     volumes:
-      - ${N8N_BACKUP_DIR}:/home/node/.n8n:Z  # Added :Z
+      - ${N8N_BACKUP_DIR}:/home/node/.n8n:Z
     networks:
       - web
-
-networks:
-  web:
-    external: true
