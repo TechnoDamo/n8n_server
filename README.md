@@ -115,7 +115,7 @@ docker-compose up -d
 
 ## 🎉 Deployment Successful!
 
-Your n8n instance is now running at: **https://{$DOMAIN}**
+Your n8n instance is now running at: **https://N8N_HOST**
 
 ### What's Next?
 - 🌐 Access your n8n dashboard
