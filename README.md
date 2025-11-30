@@ -122,11 +122,9 @@ sudo podman pull docker.io/n8nio/n8n:latest
 sudo podman pull docker.io/caddy:latest
 
 # Start the stack
-sudo podman-compose --env-file config.env \
+sudo podman-compose --env-file /home/n8n_admin/n8n_server/config.env \
   -f n8n/docker-compose.yml \
-  -f caddy/docker-compose.yml \
-  up -d
-
+  -f caddy/docker-compose.yml up -d
 ```
 
 ## 🎉 Deployment Successful!
