@@ -1,5 +1,7 @@
 services:
   n8n:
+    env_file:
+      - ../config.env     # <-- REQUIRED for Podman Compose
     image: n8nio/n8n:latest
     container_name: n8n
     restart: unless-stopped
@@ -19,3 +21,7 @@ services:
       - ${N8N_BACKUP_DIR}:/home/node/.n8n:Z
     networks:
       - web
+
+networks:
+  web:
+    external: true
