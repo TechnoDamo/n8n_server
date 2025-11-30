@@ -15,6 +15,7 @@ services:
       - "5678:5678"  # optional, internal access
     volumes:
       - ${BACKUP_DIR}:/home/node/.n8n
+    user: "${UID}:${GID}"
     networks:
       - web
 
